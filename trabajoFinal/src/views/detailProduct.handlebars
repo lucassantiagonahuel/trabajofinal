@@ -1,0 +1,33 @@
+<div>
+  <h1>Detalle de Producto</h1>
+  <ul>
+    <li>
+      <h2>{{product.title}}</h2>
+      <p>Descripción: {{product.description}}</p>
+      <p>Precio: ${{product.price}}</p>
+      <p>Stock Disponible: {{product.stock}}</p>
+      {{#each product.thumbnails}}
+        <img src="{{this}}" alt="Imagen del producto" />
+      {{/each}}
+      <label for="quantity">Cantidad:</label>
+      <input
+        type="number"
+        id="quantity"
+        name="quantity"
+        min="1"
+        max="{{product.stock}}"
+        value="1"
+      />
+      <button
+        onclick="addToCart(`{{product._id}}`, document.getElementById('quantity').value)"
+        data-product-id="{{product._id}}"
+        data-cart-id="{{cartId}}"
+        class="add-to-cart-button"
+      >Agregar al carrito</button>
+    <a href="/cart/{{../../body.dataset.cartId}}" class="go-to-cart-button" style="display: none;"><button>Ir al carrito</button></a>
+    </li>
+  </ul>
+  <a href="javascript:history.back()"><button>Volver atrás</button></a>
+</div>
+
+<script src="/static/js/products.js"></script>

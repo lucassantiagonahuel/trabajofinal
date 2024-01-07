@@ -1,0 +1,257 @@
+paths:
+    /api/carts/:
+      post:
+        summary: Crea un nuevo carrito
+        tags:
+          - Carts
+        responses:
+          "200":
+            description: El carrito se creo de forma correcta
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                    payload:
+                      $ref: "#components/schemas/Cart"
+          "500":
+            description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion con la BD
+    /api/carts/{cid}:
+      get:
+        summary: Obtiene un solo carrito a partir de su ID
+        tags:
+          - Carts
+        parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito a solicitar
+          schema:
+            $type: String 
+        responses:
+          "200":
+            description: Carrito encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/schemas/Cart'
+          "500":
+            description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion con la BD
+      put:
+        summary: Actualiza un producto a partir de su ID
+        tags:
+          - Carts
+        parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito a solicitar
+          schema:
+            $type: String
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#components/requestBodies/UpdateCart'
+        responses:
+          "200":
+            description: Cart update ok
+          "500":
+            description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion con la BD
+      delete:
+        summary: eliminar un carrito por id
+        tags:
+          - Carts
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: cid es el id del carrito que se desea eliminar
+            schema:
+              $type: string
+        responses:
+          "200":
+            description: Se elimino el carrito correctamente
+          "500":
+            description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion con la BD       
+    /api/carts/{cid}/product/{pid}:
+      post:
+        summary: Agrega un producto a un carrito
+        tags:
+          - Carts
+        parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito a solicitar
+          schema:
+            $type: String  
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto a agregar al carrito
+          schema:
+            type: string
+        responses:
+          "200":
+            description: Se agrego el producto de manera correcta
+          "500":
+            description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion con la BD          
+    /api/carts/{cid}/products/{pid}:      
+      delete:
+        summary: eliminar un producto del carrito
+        tags:
+          - Carts
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: ID del carrito a solicitar
+            schema:
+              $type: String  
+          - name: pid
+            in: path
+            required: true
+            description: pid es el id del producto que se desea eliminar
+            schema:
+              $type: string
+        responses:
+          "200":
+            description: Se elimino el producto correctamente
+          "500":
+            description: Error interno del servidor            
+      put:
+        summary: Actualiza la cantidad de un producto en el carrito seleccionado
+        tags:
+          - Carts
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: ID del carrito a solicitar
+            schema:
+              $type: String  
+          - name: pid
+            in: path
+            required: true
+            description: pid es el id del producto que se desea eliminar
+            schema:
+              $type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#components/requestBodies/UpdateQuantity'
+        responses:
+          "200":
+            description: El producto se actualizo de forma correcta
+          "500":
+            description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion con la BD
+    /api/carts/{cid}/purchase:           
+      post:
+        summary: Se finaliza la compra del carrito
+        tags:
+          - Carts
+        parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito a solicitar
+          schema:
+            $type: String  
+        responses:
+          "200":
+            description: Se finalizo la compra de manera correcta
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                    payload:
+                      $ref: "#components/responseBodies/ResponsePurchase"            
+          "500":
+            description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion con la BD                 
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID autogenerado de mongo
+        product:
+          type: ObjectId
+          description: Id de referencia a los productos que se agregan al carrito
+        quantity:
+          type: Number
+          description: Cantidad de producto agregado al carrito
+      example:
+        _id: ObjectId("65652a3790a231ac92dbd5dd")
+        products: []
+
+  requestBodies:
+    UpdateCart:
+      type: ObjectId
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: ID del producto a updetear al carrito
+
+      example:
+        products:
+          - id: "456"
+    UpdateQuantity:
+      type: ObjectId
+      properties:
+        quantity:
+          type: Number
+          description : Cantidad del producto a updetear
+
+      example:
+        quantity: 3      
+  responseBodies:
+    ResponsePurchase:
+      type: object
+      properties:
+        ticket:
+          type: object
+          properties:
+            amount:
+              type: number
+            purchaser:
+              type: string
+            _id:
+              type: string
+            code:
+              type: string
+            purchase_datetime:
+              type: string
+            __v:
+              type: number
+        rejectedProductIds:
+          type: array
+          items:
+            type: string
+      example:
+        ticket:
+          amount: 5485
+          purchaser: "test@test.com"
+          _id: "65653b913c974d78e2e262adb5"
+          code: "8h9npasdy8iq62"
+          purchase_datetime: "2023-11-28T01:00:01.150Z"
+          __v: 0
+        rejectedProductIds: []
+
+
+

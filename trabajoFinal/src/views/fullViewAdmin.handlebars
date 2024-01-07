@@ -1,0 +1,38 @@
+<div>
+  <div>
+    <h3>Bienvenido {{user.user.first_name}}</h3>
+    <br>
+    <h4>Rol {{user.user.role}}</h4>
+  </div>
+
+  <h1>Lista de productos</h1>
+  <ul>
+    {{#each products}}
+      <li>
+        {{this.title}}
+        <a href="/productdetail?id={{this._id}}"><button>Ver detalle</button></a>
+      </li>
+    {{/each}}
+  </ul>
+
+  {{#if hasPrevPage}}
+    <a href="{{prevLink}}"><button>Anterior</button></a>
+  {{/if}}
+
+  {{#if hasNextPage}}
+    <a href="{{nextLink}}"><button>Siguiente</button></a>
+  {{/if}}
+
+    <h1>Lista de usuarios</h1>
+  <ul>
+    {{#each users}}
+      <li>
+        {{this.first_name}} {{this.last_name}}
+      </li>
+    {{/each}}
+              <a id="deleteUsersButton" href="#"><button>Eliminar usuarios inactivos</button></a>
+  </ul>
+  <button id="logoutBtn">Salir</button>
+</div>
+<script src="/static/js/products.js"></script>
+<script src="/static/js/users.js"></script>

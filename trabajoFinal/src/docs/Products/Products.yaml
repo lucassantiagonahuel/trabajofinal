@@ -1,0 +1,187 @@
+paths:
+    /api/products/:
+      get:
+        summary: Obtiene todos los productos
+        tags:
+          - Products
+        responses:
+          "200":
+            description: Los productos fueron obtenidos satisfactoriamente
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#components/schemas/Product'
+          "500":
+            description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion con la BD
+      post:
+        summary: Crea un producto
+        tags:
+          - Products
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#components/requestBodies/UpdateProduct"
+        responses:
+          "200":
+            description: El producto se creo de forma correcta
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                    payload:
+                      $ref: "#components/schemas/Product"
+          "500":
+            description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion con la BD
+    /api/products/{pid}:
+      get:
+        summary: Obtiene un solo producto apartir de su ID
+        tags:
+          - Products
+        parameters:
+        - name: pid
+          in: path
+          requiered: true
+          description: ID del producto a solicitar
+          schema:
+            $type: String
+        responses:
+          "200":
+            description: Producto encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/schemas/Product'
+          "500":
+            description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion con la BD
+      put:
+        summary: Actualiza un producto a partir de su ID
+        tags:
+          - Products
+        parameters:
+        - name: pid
+          in: path
+          requiered: true
+          description: ID del producto a actualizar
+          schema:
+            $type: String
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#components/requestBodies/UpdateProduct'
+        responses:
+          "200":
+            description: El producto se actualizo de forma correcta
+          "500":
+            description: Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion con la BD
+      delete:
+        summary: eliminar un producto por id
+        tags:
+          - Products
+        parameters:
+          - name: pid
+            in: path
+            required: true
+            description: pid es el id del producto que se desea eliminar
+            schema:
+              $type: string
+        responses:
+          "200":
+            description: Se elimino el producto correctamente
+          "500":
+            description: Error interno del servidor            
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID autogenerado de mongo
+        title:
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripcion del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnails:
+          type: String
+          description: Imagenes del producto
+        code:
+          type: String
+          description: Codigo del producto, este campo debe ser unico
+        stock:
+          type: Number
+          description: Stock del producto
+        status:
+          type: Boolean
+          description: Status del producto
+        category:
+          type: String
+          description: Categoria del producto
+        owner:
+          type: String
+          description: Owner del producto
+      example:
+        _id: ObjectId("655c03058dbf4fa558f358d6")
+        title: Vodka
+        description: Vodka marca absolut
+        price: 15000
+        thumbnails: http://localhost:8080/static/images/1700528901386-iguanaDos.jpeg
+        code: absolut123
+        stock: 15
+        status: true
+        category: Bebidas
+        owner: 6530778ab04bab4c5f54a504
+  requestBodies:
+    UpdateProduct:
+      type: ObjectId
+      properties:
+        title:
+          type: String
+          description: Nombre del producto
+        description:
+          type: String
+          description: Descripcion del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnails:
+          type: String
+          description: Imagenes del producto
+        code:
+          type: String
+          description: Codigo del producto, este campo debe ser unico
+        stock:
+          type: Number
+          description: Stock del producto
+        status:
+          type: Boolean
+          description: Status del producto
+        category:
+          type: String
+          description: Categoria del producto
+        owner:
+          type: String
+          description: Owner del producto
+      example:
+        title: Vodka
+        description: Vodka marca absolut
+        price: 15000
+        thumbnails: "http://localhost:8080/static/images/1700528828366-iguanaDos.jpeg"
+        code: absolutvodeka123
+        stock: 15
+        status: true
+        category: Bebidas
+        owner: 6530778ab04bab4c5f54a504

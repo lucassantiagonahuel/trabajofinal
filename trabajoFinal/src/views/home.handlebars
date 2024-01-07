@@ -1,0 +1,13 @@
+<div>
+    <h1>Lista de productos</h1>
+    {{#unless isEmpty}}
+    <ul>
+        {{#each products}}
+        <li>{{this.title}}</li>
+        {{/each}}
+    </ul>
+    {{else}}
+    <h2>No hay productos cargados</h2>
+    {{/unless}}
+
+</div>

@@ -1,0 +1,60 @@
+<div>
+  <h1>Crear Nuevo Producto</h1>
+  <form
+    id="productForm"
+    action="/api/products"
+    enctype="multipart/form-data"
+    method="POST"
+  >
+    <label for="title">Título:</label>
+    <input type="text" name="title" required /><br /><br />
+
+    <label for="description">Descripción:</label>
+    <textarea name="description" required></textarea><br /><br />
+
+    <label for="price">Precio:</label>
+    <input type="number" name="price" step="0.01" required /><br /><br />
+
+    <label for="thumbnails">Imágenes:</label>
+    <input type="file" name="thumbnails" accept="image/*" multiple /><br /><br
+    />
+
+    <label for="code">Código:</label>
+    <input type="text" name="code" required /><br /><br />
+
+    <label for="stock">Stock:</label>
+    <input type="number" name="stock" required /><br /><br />
+
+    <label for="status">Estado:</label>
+    <select name="status" required>
+      <option value="true">True</option>
+      <option value="false">False</option>
+    </select><br /><br />
+
+    <label for="category">Categoría:</label>
+    <input type="text" name="category" required /><br /><br />
+
+    <input type="submit" value="Crear Producto" />
+  </form>
+</div>
+
+
+<div>
+  <h1>Lista de productos</h1>
+  {{#unless isEmpty}}
+    <ul id="productList">
+      {{#each products}}
+        <li>
+          {{this.title}}
+          <button class="delete-button" data-product-id="{{this._id}}">Eliminar</button>
+        </li>
+      {{/each}}
+    </ul>
+  {{!-- {{else}}
+    <h2>No hay productos cargados</h2> --}}
+  {{/unless}}
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/static/js/realTimeProducts.js"></script>

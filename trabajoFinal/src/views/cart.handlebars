@@ -1,0 +1,17 @@
+<div>
+  <h1>Lista de productos</h1>
+  <ul>
+    {{#each products}}
+      <li>
+        {{this.title}}
+        - Cantidad:
+        {{this.quantity}}
+      </li>
+    {{/each}}
+    <button id="finalizarCompraButton" data-cart-id="{{cartId}}">Finalizar
+      compra</button>
+
+  </ul>
+</div>
+
+<script src="/static/js/carts.js"></script>
