@@ -51,7 +51,7 @@ const github = async (req, res) => {};
 
 const githubcallback = async (req, res) => {
   req.session.user = req.user;
-  res.redirect("/");
+  res.redirect("/resetPassword");
 };
 
 export default {
