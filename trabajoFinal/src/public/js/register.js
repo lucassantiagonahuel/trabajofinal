@@ -15,6 +15,7 @@ form.addEventListener("submit", (e) => {
     .then((result) => result.json())
     .then((json) => console.log(json))
     .then((json) => {
+      alert("Registro exitoso");
       window.location.replace("/login");
     })
     .catch((error) => console.error("Error al realizar el registro:", error));
