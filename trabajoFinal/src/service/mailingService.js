@@ -53,8 +53,6 @@ export default class MailingService {
 
   sendEmailDeletedProduct = async (email,id) => {
     try {
-      console.log(email);
-      console.log(id);
       let result = await this.client.sendMail({
         from: config.userEmail,
         to: email,

@@ -97,8 +97,6 @@ const changePassword = async (req, res) => {
 
   try {
     const validToken = await verifyToken(token);
-    console.log("VALID TOKEN :");
-    console.log(validToken);
     res.render("changePassword", { token });
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
